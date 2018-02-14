@@ -255,8 +255,6 @@ big picture how Tcl is integrated into tools like Vivado.
 
 * which is finally executed.
 
---
-
 .N[
 The command may be some Tcl subroutine – defined by the user or at startup of
 a tool in a configuration file – or it may be implemented in C/C++ and made
@@ -280,8 +278,6 @@ Not to much surprise, as this was an original goal of Tcl's initial design
 by [John Ousterhout](http://de.wikipedia.org/wiki/John_Ousterhout).
 ]
 
---
-
 .N[
 The latter are **not** the main topic of the following presentation, its
 focus is what Vivado users need to know to cope with Tcl in general.
@@ -300,19 +296,13 @@ For more information on the Tcl Vivado Integration see the following Vivado User
 
 * [Using Constraints](http://www.xilinx.com/support/documentation/sw_manuals/xilinx2015_1/ug903-vivado-using-constraints.pdf)
 
---
-
 The first – ug894 (~70 pages) – introduces into Tcl from the Vivado
 perspective, but is far from exhaustive with respect to Tcl.
-
---
 
 The second – ug835 (1000+ pages) – is exhaustive with respect to the commands
 Vivado adds to Tcl, but most of it directly refers to the design objects (as
 represented in the internal database) on which the XILINX design flow for FPGAs
 is based.
-
---
 
 The third – ug903 (172 pages total) – in some of its parts covers Tcl scripting
 in the special area of specifying design constraints.
@@ -333,8 +323,6 @@ An interface to Tcl is provided by Vivado in several forms:
   * `stop_gui` – issued from Vivado's Tcl console
   * `start_gui` – issued from Vivado's direct scripting mode
 
---
-
 .N[
 The Tcl console in the Vivado GUI has many useful options not provided in
 direct scripting mode, like extended syntax highlighting and context dependent
@@ -353,8 +341,6 @@ More information on Tcl is available in user communities like these:
 
 * The XILINX Tcl Store – with focus on using Tcl with XILINX products
   http://www.xilinx.com/products/design-tools/vivado/Tcl-store.html
-
---
 
 .N[
 Of course, you may also start a general search with your Tcl questions by using
@@ -376,8 +362,6 @@ improved use of Vivado, so:
 .N.center[
 Why not use Tcl and possibly Tk for other purposes?
 ]
-
---
 
 You could – e.g. – use the knowledge acquired some day also for
 
@@ -506,15 +490,9 @@ The Tcl syntax is minimal in various aspects – these are its main steps:
 
 1. [Line Concatenation](#line_concatenation)
 
---
-
 1. [Command Separation](#command_separation)
 
---
-
 1. [Word Separation](#word_separation)
-
---
 
 1. [Substitutions of](#substitutions)
 
@@ -522,8 +500,6 @@ The Tcl syntax is minimal in various aspects – these are its main steps:
     [Arbitrary Unicode](#subst_unicode) Characters
   * [Variables by Content](#subst_vars_by_content)
   * [Subroutines by Return Value](#subst_return_values)
-
---
 
 Alongside the above, [Several Kinds of Quoting](#kinds_of_quoting)
 are honoured:._[]
@@ -607,8 +583,6 @@ $greet
 Can you explain this?._[]
 ]
 
---
-
 .F[:
 Looking closely to spot the difference between the command on the left and on
 the right should reveal that the newline character after the back-slash is not
@@ -637,15 +611,11 @@ Next in the Tcl syntax analysis is looking for command separators.
 
 * also semicolons separate commands.
 
---
-
 As a trivial example, the following prints a prompt and then gets some
 interactive input:
 ```
 puts "start from count: "; flush stdout; gets stdin count
 ```
-
---
 
 .N[
 Usually in Tcl two commands are not written in the same line, unless they belong
@@ -683,8 +653,6 @@ guides, because it usually depends on user preference set in the editor
 how they are expanded, hence code may look different for developers with
 different settings.
 ]
-
---
 
 .pull-left[
 Therefore all the below equivalent:
@@ -724,17 +692,11 @@ substitution.
 * Unprintable characters are substituted for some \-sequences (basically
   the same set as in C/C++).
 
---
-
 * Characters with a special meaning are substituted by themselves if preceded
   by a backslash (i.e. taken verbatim without being special).
 
---
-
 * If `$` is followed by a "variable name" (composed from characters, digits,
   or underscore) the content of that variable is substituted.
-
---
 
 * Any part of a command enclosed in square brackets will be taken as a (nested) Tcl
   command of its own:
@@ -769,8 +731,6 @@ box, the character may be replaced by a space, or even completely dropped.
 When such a value is used as "character output" the effect described above
 is the usual behavior of a classic terminal or printer.
 
---
-
 .N.center[
 In general renderering software may or may not exhibit that behavior.._[]
 ]
@@ -793,8 +753,6 @@ octal or hexadecimal):
 When such a value is used as **Character Output** the glyph displayed in
 general depends on the **Stream Encoding** and should match the expectations of
 the rendering software.
-
---
 
 .N.center[
 Non-matching encodings will result in more or less "garbled" output.._[]
@@ -828,8 +786,6 @@ Substituting the variable content:
 puts $greet
 ```
 ]
-
---
 
 While it is possible to use any character._[] in a variable **name**, this is
 usually avoided as it would complicate substituting the value:
@@ -873,8 +829,6 @@ cd $other        ;# ... change to other working directory ...
 cd $oldpwd       ;# ... restore saved working directory
 ```
 
---
-
 .N[
 Of course, the command enclosed in square brackets may also have arguments
 itself and use variable and nested command substitutions:._[]
@@ -901,8 +855,6 @@ All the substitutions described so far
 
 * happen **in a strict order, one after the other**
 * **not** repeatedly if the substituted value just "looks" special.
-
---
 
 .pull-left[
 Consider …
@@ -952,8 +904,6 @@ Be sure to understand the consequences that for the `eval` command parts marked
 with "`^^^---`" in the last line above **two** rounds of substitutions take place.
 ]
 
---
-
 Further substitutions on results of prior substitutions
 
 * may or may not be an issue
@@ -981,8 +931,6 @@ At that point, a quick (and not very complete) introduction to
 * Subroutines
 
 makes sense, as otherwise not many meaningful examples are possible
-
---
 
 .N[
 Both topics will get additional and deeper coverage in
@@ -1014,8 +962,6 @@ more readable compared to `eval … \$$y …` – and less error prone too. (Why
 latter?)
 ]
 
---
-
 As [already has been shown in some more detail](#subst_vars_by_content), to
 substitute the current value of a variable, its name is preceded by a dollar
 sign:
@@ -1040,19 +986,13 @@ From the caller's perspective, a Tcl command can be anything:
 * a built-in command implemented in C or C++ (provided by the Tcl core or the
   tool that uses Tcl as its command language);
 
---
-
 * a subroutine implemented in Tcl,
 
   * either of from the [Tcl Standard Library](#tcl_standard_library)
   * or (again) supplied by a specific tool using Tcl as command language;
 
---
-
 * a subroutine implemented in Tcl and previously defined by the same script that
   also calls it.
-
---
 
 .N[
 In any case the [Tcl Syntax Analysis](#tcl_minimal_syntax) will identify **what
@@ -1100,8 +1040,6 @@ commands it is necessary to know what these commands return:
 * `set` with only one argument returns the current value of the variable;
 * `puts` returns and empty string.
 
---
-
 Knowing this, it should be easy to tell what will be the effect of the following
 commands (continuing from the last page):._[]
 ```
@@ -1129,8 +1067,6 @@ Subroutines are defined with the command `proc`,
 * followed by the name that will later be used to call (execute) them,
 * the list of their "formal parameters", and
 * the Tcl code that contributes their "body".
-
---
 
 As the topic gets its real coverage only in the next part, the following example
 does something rather unusual: It defines a command with the (exotic) name
@@ -1161,8 +1097,6 @@ substitutions are done – is crucial for understanding the Tcl syntax.
 .N.center[
 The subroutine defined on the last page can help here.
 ]
-
---
 
 Try it as follows:._[]
 ```
@@ -1216,8 +1150,6 @@ stay with the rules of most high-level programming languages:
 Compose name identifiers from letters, digits and underscore only.
 ]
 
---
-
 * Besides readability this also is also necessary so that the content of
   variables can be easily expanded in the command line by prepending a `$`
   dollar sign (`$`).._[]
@@ -1228,12 +1160,8 @@ To "use" it just write an empty pair of curly braces. (For a subroutine also two
 adjacent double quotes will do.
 ]
 
---
-
 * Variable names **not** only consisting of letters, digits and underscore need
   to be enclosed in curly braces when used after `$`.
-
---
 
 * For names of subroutines no special care needs to be taken.
 
@@ -1247,12 +1175,8 @@ Having steered you away from "unusual" names possible in Tcl, it might
 * For **variables** storing kind of "internal secrets" and are not expected
   to be touched or modified often,
 
---
-
 * For **subroutines** doing something unusual or very special, so the pure
   appearance of the name should alert about this.
-
---
 
 * To temporarily "mask" the definition of a subroutine.._[]
 
@@ -1310,8 +1234,6 @@ Any **other** character following a backslash will be taken verbatim, i.e.
 
 * (so if it has none it simply stands as it is).
 
---
-
 .N.center[
 Note that the backslash may also be used to quote itself, i.e.:  
 `\\` (**when** quoting is considered) →  
@@ -1338,8 +1260,6 @@ Until the next **unquoted** double quote._[]
 Double quotes are what in German is known as *Gänsefüßchen*.
 ]
 
---
-
 What still has its special function are
 
 * **backslashes** (for producing non-printing characters and for quoting),
@@ -1363,21 +1283,15 @@ It this way
   respect to its special function in
    [Tcl's Syntax Analysis](#tcl_minimal_syntax),
 
---
-
 * except that contained curly braces are **counted**
 
   * to find the *final* closing brace,
   * matching the *initial* opening brace, and
 
---
-
 * back-slashes **do not change** any content inside the curly braces,
 
   * but may be used to **disable counting**,
   * if it directly prefixes an (opening or closing) curly brace.
-
---
 
 .N.center[
 Especially be aware that backslashes **will not be removed** from a range
@@ -1418,8 +1332,6 @@ Besides supplying the option `-nonewline` it is legal to use `puts` with two
 arguments, if the first one refers to an open file, as will be demonstrated in
 [Part 3](#tcl_standard_library).
 ]
-
---
 
 Be sure to understand that `puts` receives
 
@@ -1480,20 +1392,14 @@ As John Ousterhout states in his book "[Tcl and the Tk Toolkit]", some
 difficulties a Tcl novice may have stem from the assumption, the syntax must be
 more complex as it actually is.
 
---
-
 Tcl-Syntax can be described very briefly as:
 
 * Looking-up separators (for commands and words)
 * Doing substitutions (variable content and command return values)
 * All the way paying attention to quoting (`\`, `" … "`, `{ … }`)
 
---
-
 Plus one more rule – may be an even more important one with respect to
 simplicity: **Do not repeat any of the above, once it is done.**
-
---
 
 Therefore – and because looking up separators happens before variables
 and command return values are substituted – the following …
@@ -1522,21 +1428,15 @@ Or `wish` if you build a GUI based on Tk.
 The key word here is **understand**.
 ]
 
---
-
 Trying *"to understand"* does not mean get something to work by using
 *"trial and error"* only!
 
 * You may well try and vary and try again and vary again …
 
---
-
 * … only **in the end** you should not any longer be surprised
 
   * **why it works,** and
   * **how it works** …
-
---
 
 * … but be able to explain it to your colleagues, or at least to yourself.
 
@@ -1578,22 +1478,16 @@ Why repeat anything in the era of electronic documents? We can link!
 
 * For short summary of steps see [here](#tcl_minimal_syntax).
 
---
-
 * You will find more
 
   * about command separation [here](#command_separation) …
   * … and about word separation [here](#word_separation).
-
---
 
 * Substitutions that eventually may occur are detailed
 
   * for non-printing characters [here](#subst_nonprinting),
   * for variable content [here](#subst_vars_by_content), and
   * for subroutine return values [here](#subst_return_values).
-
---
 
 * Finally you need to understand
 
@@ -1615,16 +1509,12 @@ Traditionally there are two important ways to structure data in Tcl:
 
 <!-- -->
 
---
-
 * [Arrays](#tcl_arrays_101)
   * essentially (string-) key-based look-up tables,
   * (aka. Hashes in some other scripting languages)
   * (so rather like `std::map<string, string>` in C++).
 
 <!-- -->
-
---
 
 Recently Tcl has added another important data structure:
 
@@ -1670,8 +1560,6 @@ to list variables"* – the **name**. Therefore `month_names` is always prefixed
 with a `$` above!
 ]
 
---
-
 Also, lists are often processed with [`foreach`], fully introduced
 [later](#cmd_foreach):
 ```
@@ -1696,8 +1584,6 @@ puts [lindex $cities 1]   ;# => New York
 puts [lindex $cities 2]   ;# => London
 puts [lindex $cities 3]   ;# => Berlin
 ```
-
---
 
 As the second element (with index 1) is itself a list, its parts can also be
 accessed individually:
@@ -1731,8 +1617,6 @@ In more recent Tcl versions only, i.e. it was not originally a feature of Tcl, s
 you might not see it used in all applicable contexts.
 ]
 
---
-
 This will also work with the [`lset`] command to modify elements of a list:
 ```
 lset cities 0 "City of Love"  ;# Paris => City of Love
@@ -1763,8 +1647,6 @@ set capital_of_GB London
 set capitals "$capital_of_AR $capital_of_DE $capital_of_GB"
 ```
 
---
-
 A more careful approach will use the command [`list`], which **will** work as
 (probably) expected:._[]
 ```
@@ -1791,8 +1673,6 @@ predictable and may hold problematic content. (E.g. assume `other` holds any
 something as weird as "`{\ \}}`").
 ]
 
---
-
 Finally there is the command `replace`, which not only allows to do what its
 name seems to suggests …
 ```
@@ -1800,14 +1680,10 @@ puts [lreplace $cities end end Washington]
 puts [lreplace $cities 1 2 Paris Madrid Lissabon]
 ```
 
---
-
 … but also allows for removing content:
 ```
 puts [lreplace $capitals 1 2]
 ```
-
---
 
 .N[
 Note that `lreplace` does **not** modify the content of a *list variable* but
@@ -1824,8 +1700,6 @@ Arrays are assumed by Tcl if a variable name follows a special pattern:
 * After the regular name of a variable
 * (without any space in between)
 * follows a pair of round parentheses, holding the index.
-
---
 
 .pull-left[
 An array index may be number …
@@ -1881,15 +1755,11 @@ puts $v($k($j($i)))
 ```
 ]
 
---
-
 Multiple array dimensions are not directly supported but may be easily simulated
 by
 
 *  writing two (or more) indices adjacent,
 * separated with some unique character.
-
---
 
 The only crux here is to find a separator for which it can be ensured that it
 will never be part of a valid index.
@@ -1932,8 +1802,6 @@ What do you think: will this first purge the old content or just add new indices
 and values, in case the array does already exists with some entries?
 ]
 
---
-
 If this is given as presentation …
 
 .N.center[
@@ -1949,17 +1817,11 @@ Flow control in Tcl allows for
 
 * conditional execution ([`if`](#tcl_cmd_if))
 
---
-
 * two-way or multi-way branches ([`if-else`](#tcl_cmd_if_chaining) or
   [`switch`](#tcl_cmd_switch)), and
 
---
-
 * repetition in various flavours ([`while`](#tcl_cmd_while),
   [`for`](#tcl_cmd_for), and [`foreach`](#tcl_cmd_foreach).
-
---
 
 Before each of the above is demonstrated with examples, it is instructive what
 our [good ol' helper used to demonstrate quoting](#defining_subroutines) will say
@@ -2000,26 +1862,18 @@ There are two things, one that is required very often but Tcl does not support
 directly, and second Tcl does implicitly all the time good but which needs
 sometimes run explicitly.
 
---
-
 * `expr` – **allows evaluation of arithmetic expressions**  
   which the Tcl Syntax Analysis can not do directly but only through this
   command;
-
---
 
 * `eval` – **evaluate an arbitrary string as commands**  
   which the Tcl Syntax Analysis dos all the time for with the scripts it
   executes but for flow control it needs to be available explicitly.
 
---
-
 .N[
 All flow control is **not** implemented as part of the Tcl Syntax but by
 separate commands.
 ]
-
---
 
 In other words: If a Tcl script branches or repeats on some condition, from the
 perspective of the Tcl Syntax Analysis **always** some command gets started, which
@@ -2055,8 +1909,6 @@ set w [expr {
       }]
 ```
 ]
-
---
 
 Generally `expr` first concatenates its arguments to a single, long string,
 which is then evaluated similar to the expression syntax of C/C++.
@@ -2109,8 +1961,6 @@ while {[incr i -1] >= 0} {
 
 <br/ >
 
---
-
 .W[
 As right-shifting bits in a 2's complement integral number representation copies
 the sign bit, the example on the left side turns into a never ending loop for
@@ -2144,8 +1994,6 @@ set runblocksOptDesignOpts { -sweep -retarget -propconst -remap }
 eval opt_design $runblocksOptDesignOpts
 ```
 
---
-
 **Without** the use of `eval` above
 
 * command separators were looked-up only once,
@@ -2169,14 +2017,10 @@ The Tcl command(!) [`if`] basically does the following:
 * it hands over its **second** argument to [`eval`](#cmd_eval) for (further
   syntax analysis and) execution.
 
---
-
 .N[
 A condition is `true` if the arithmetic evaluation does result in some value
 different from zero.
 ]
-
---
 
 Examples for the two most basic forms follow below:
 .pull-left[
@@ -2315,14 +2159,10 @@ to `if`:
 * it hands over its **second** argument to [`eval`](#cmd_eval) for (further
   syntax analysis and) execution.
 
---
-
 .N[
 The border case for `while` is no execution of the code block at all, if the
 condition evaluates to `false` from the start.
 ]
-
---
 
 The following prints a count-down from 10, pausing for half a second  after each
 value.
@@ -2457,8 +2297,6 @@ Though this data model seems inferior because the association of the different
 lists via an index only might be less robust, i.e. will more easily be broken.
 ]
 
---
-
 The longer of both lists determines the number of runs through the loop. After
 the shorter list is exhausted, its placeholder variable is filled with an empty
 string inside the loop body.
@@ -2472,8 +2310,6 @@ header: ##### Variation: Loops with `foreach` and Arrays
 
 Loops with [`foreach`] may be useful for [Tcl Arrays](#tcl_arrays_101) too, as
 some [`array`] sub-commands return [Tcl Lists](#tcl_lists_101).
-
---
 
 The following example assumes
 
@@ -2493,8 +2329,6 @@ No code to calculate the average is provided here but it should be obvious how
 to add it.
 ]
 
---
-
 Or with yet an alternate loop form:
 ```
 foreach {temperature location} [array get measurements] {
@@ -2513,12 +2347,8 @@ header: #### Early Loop Termination or Re-Evaluation Loop Contiunation
 By using [`break`] loops need not run until a condition becomes `false` (or a list
 is exhausted), but can be prematurely terminated.
 
---
-
 By using [`continue`] the loop body needs not run to its end but can branch back
 to reevaluate the condition (or extract the next list element, if any).
-
---
 
 The following example calculates `N` primes:._[]
 ```
@@ -2555,8 +2385,6 @@ Tcl subroutines are
 * followed by a formal argument list, and
 * the subroutine body.
 
---
-
 The table associating names with the code to call is then extended by one more
 entry, branching to the subroutine body once the subroutine's name is recognised
 as command to execute, after syntax analysis is complete.
@@ -2592,8 +2420,6 @@ calculate_primes
 puts "first $N primes: $primes"
 ```
 
---
-
 .N[
 Instead of naming the global variables in the command [`global`], all references
 such variables may be preceded with two colons (`::`).
@@ -2607,8 +2433,6 @@ An improvement over globals, which is easy to achieve, is the use of
 
 * a (value) argument for handing over the number of primes to calculate, and
 * the return value for transferring back the result.
-
---
 
 That way none of the variables inside `calculate_primes` is visible to the
 caller and no variable belonging to the latter is reachable by the callee.
@@ -2638,8 +2462,6 @@ requiring
 
 * on the *caller's side* to hand over a variable **name**, and
 * on the *callee's side* to link that name via [`upvar`] with a local alias.
-
---
 
 Accordingly modified the subroutine and its call will now look as follows:
 ```
@@ -2713,8 +2535,6 @@ Note that `fincr` does not fully mirror the more recently modified behavior of
 is not yet defined.
 ]
 
---
-
 Some possible ways to use (and test) `fincr` are:
 ```
 set x 1.5
@@ -2732,16 +2552,12 @@ Variable length arguments lists have already been used … in the helper functio
 used a number of times to show the resulting command line after Tcl has finished
 its syntax analysis.
 
---
-
 The essential mechanism is
 
 * to specify name `args` as last in the formal parameter in the definition of a
   subroutine,
 * what will cause to receive all arguments as a list – or those remaining after
   some fixed arguments, which must be always specified by the caller (see below).
-
---
 
 The following example combines `puts` and `format` within a single function that
 behaves like `printf` in C, hence the name:
@@ -2750,8 +2566,6 @@ proc printf {fmt args} {
     eval puts -nonewline {[format $fmt\n} $args {]}
 }
 ```
-
---
 
 .N[
 Make sure to understand why the implementation needs to use `eval` internally
@@ -2778,8 +2592,6 @@ create a local variable but arranges that using a local name will actually
 access a variable in the *caller's* stack frame.
 ]
 
---
-
 Some Tcl users also know that there is a related command [`uplevel`],
 
 * much similar to `eval` in that it takes a string, applies Tcl syntax
@@ -2787,13 +2599,9 @@ Some Tcl users also know that there is a related command [`uplevel`],
 * but arranges to make this happen **as if the caller** of the subroutine
   had executed that command.
 
---
-
 The real use for this is is to implement (new) ways of structuring control flow
 (which Tcl users rarely do), and some *block of code* has to be executed as if
 the caller had run it locally.
-
---
 
 .N[
 Do not worry if you have no idea what this page is about, once the time comes
@@ -2840,8 +2648,6 @@ The [command `string`](#char_strings) used above to test whether `N` contains
 digits only will be covered in [Part 3](#tcl_standard_library).
 ]
 
---
-
 .N[
 Without further precautionary measures, calling `calculate_primes` with any
 non-numeric argument will now abort all further processing.
@@ -2859,8 +2665,6 @@ header: #### Example: Using `catch`
 The command [`catch`] may be used to regain control after the command `error`
 has been executed.
 
---
-
 The following example demonstrates how a program could be prompted repeatedly
 for interactive input, until the call to `calculate_primes` succeeds:
 ```
@@ -2876,8 +2680,6 @@ for {set done 0} {!$done} {} {
 }
 
 ```
-
---
 
 .N[
 Another typical use pattern involving `catch` will be shown in
@@ -2898,25 +2700,17 @@ may some reusable components emerge from it.
 Basically there are three ways of organising reuse – assuming *"Copy & Paste"*
 of reusable components in the editor shall be avoided:
 
---
-
 * Write subroutine definitions in a file of their own, and
 * read this file explicitly with the command [`source`].
-
---
 
 <!-- -->
 
 * Organise the files with reusable subroutine definitions in a way,
 * so that [Tcl's Autoloading] will find and read it, whenever necessary.
 
---
-
 <!-- -->
 
 * Organise your library components into [Tcl Packages].
-
---
 
 .N[
 All of the above can be subsumed under "advanced use" and in so far is no
@@ -2981,8 +2775,6 @@ effort needs to be invested on the side of the its standard library, but:
   * Only the commands that need to be used need to be learned, and
   * as such are used promptly, experience builds up quickly.
 
---
-
 * There are many systematic patterns,
 
   * so it is usually easy to "extrapolate" from existing experience,
@@ -3007,14 +2799,10 @@ Nearly everything command in Tcl can be tried interactively
 * and often as "one-liner" (i.e. without framing it into a larger program)
 * so in one go with reading the manual any obscurities may be clarified.
 
---
-
 .N[
 A similar approach is used for demonstrating some important library functions
 during this part of the presentation.
 ]
-
---
 
 Please feel free to interrupt the speaker, to control the direction into which
 the live examples given evolve.
@@ -3090,8 +2878,6 @@ Which is basically the same for strings as in C `fprintf` and `fscanf` provide
 for files, or `printf` and `scanf` for standard output and standar input.
 ]
 
---
-
 .N[
 The commands in Tcl work with strings of dynamic length.
 ]
@@ -3156,8 +2942,6 @@ while {[gets stdin line] > 0} {
 }
 ```
 
---
-
 Note that the example takes special care to recognize excess input after the
 second float, which would be silently accepted that way:
 ```
@@ -3174,8 +2958,6 @@ operation on byte values.
 
 Here `scan` and `format` are useful too, as converting with the `%c`-specifier
 will translate between character values and (internal) integral numbers.
-
---
 
 For some input stream – channel $uart below, assumed to be in **translation
 mode `binary`(!)** – the following reads single bytes._[], then
@@ -3227,14 +3009,10 @@ non-printable characters correctly comes with its own set of pitfalls, which
 even depends on the Tcl version used.
 ]
 
---
-
 .N[
 For most use cases it makes sense to enclose a regular expression in curly
 braces ([Tcl full quoting](#curlybrace_quoting)).
 ]
-
---
 
 The above avoids that any contained character gets a special handling in the
 [Tcl Syntax Analysis](#syntax_quickly) and is eventually substituted by
@@ -3254,19 +3032,11 @@ Basically there are
   * a specific single character, or
   * a character from a given selection,
 
---
-
 * **Operators** – binary (postfix) and unary (infix),
-
---
 
 * **Precedence Rules**, and
 
---
-
 * **Round Parentheses** to alter precedence.
-
---
 
 On the next slides follow a very brief (far from exhaustive) introduction to
 Tcl's Regular Expression Syntax and some basic usage examples.
@@ -3287,8 +3057,6 @@ as atoms for themselves. Notable exceptions are:
 * `.` (dot) – represents any character
 * `[…]` – represents any character listed inside (denoted here as …)
 * `[^…]` – represents any character **not** listed inside (denoted here as …)
-
---
 
 Furthermore a backslash allows to introduce the character following it as atom,
 and there are also escape sequences for non-printing characters.._[]
@@ -3318,8 +3086,6 @@ A frequent necessity in a regular expression is to specify
 * any *hex digit* – `[0-9a-fA-F]`, or
 * any *alphanumeric character* `[0-9a-zA-Z]`,
 * … (etc.) …
-
---
 
 .W[
 A range in square brackets, like `a-z`,  means: *Any [Code Point] in the
@@ -3364,8 +3130,6 @@ As a solution [Named Character Classes] are provided …
 Such escapes are – of course – only recognized and evaluated as part of regular
 expressions.
 ]
-
---
 
 This also helps with internationalization, as if necessary definitions like
 
@@ -3415,8 +3179,6 @@ Two adjacent sub-expressions may be read as joined with an "invisible operator"
 in between, i.e. `ab` as if it were `a·b`, with `·` has a precedence lower than
 all postfix operators and higher than the vertical bar.
 ]
-
---
 
 .center[+]
 
@@ -3587,14 +3349,10 @@ operations with date and time.
 * `clock scan …` – generate internal representation from string
 * `clock add …` – helper for time/calendar calculations
 
---
-
 Determine same time yesterday:
 ```
 set t [clock add [clock seconds] -1 day]
 ```
-
---
 
 Return current time as string (YYYY-MM-DD hh:mm:ss):
 ```
@@ -3638,18 +3396,12 @@ only works at the interactive interpreter level (where any unknown command is
 tried as operating system command anyway).
 ]
 
---
-
 * [`cd`] – change the current working directory according to the path name
   specified as argument or to the user's home directory, if no argument is
   given;
 
---
-
 * [`glob`] – return list of path names in given or current directory (see
   examples following).
-
---
 
 .W[
 As it is a **per-process resource**, be careful when changing the current
@@ -3674,8 +3426,6 @@ cd $old       ;# restore previous working directory
 .N.center[
 Note that the above is not very secure against failures.
 ]
-
---
 
 Especially it will create problems if one of the command running while the
 directory is changed causes an error which is caught without restoring the
@@ -3708,8 +3458,6 @@ All files in directory `/tmp`:
 … [glob /tmp/*] …
 ```
 ]
-
---
 
 There are many useful options, some are shown in the examples below:._[]
 ```
@@ -3751,8 +3499,6 @@ Check for existence and given properties:
 * `file type …` – determine type
 * `file stat … …` – returns **all** properties in Tcl array
 
---
-
 Print all properties of current working directory:
 ```
 file stat [pwd]
@@ -3778,8 +3524,6 @@ Operations with file path names:
 * `file normalize` – replace contained parts, e.g. `…/./…` or `…/../…`
 * `file nativename` – turn into OS-specific form
 * …
-
---
 
 .pull-left[
 Change to directory one level up from home directory:
@@ -3811,8 +3555,6 @@ Copy and Move Files:
 * `file copy -force …` – silently overwrite (variants as before)
 * `file rename -force …` – silently overwrite (variants as before)
 
---
-
 Create backup copy of `file` with suffix changed to `bak`:
 ```
 proc backup {file {bak .bak}} {
@@ -3832,15 +3574,11 @@ Accessing the content of files from Tcl is modelled after C:
 
 * `open` returns a file handle which usually is saved in a variable,
 
---
-
 * as it is the entrance ticket for other operations with the file,
 
   * like reading or writing (`read`, `gets` and `put`),
   * finding or setting the current position (`tell` and `seek`), and
   * miscellaneous operations like testing for EOF (`eof`)
-
---
 
 * and finally handed over to `close` to release the resource associated with
   the file handle.
@@ -3859,8 +3597,6 @@ The command [`open`] has two arguments:
 As usual, if the file name is a relative path name it is interpreted from the
 current working directory.
 
---
-
 .N[
 An unusual feature is that a path name beginning with a vertical ar (`|`) is
 considered to be external command. Depending on the open mode its input or
@@ -3871,8 +3607,6 @@ output is then available via the file handle returned.._[]
 This can be seen as a way of starting a process asynchronously and will be
 covered later
 ]
-
---
 
 Open modes are specified
 
@@ -3900,8 +3634,6 @@ if {[catch { open $pathname r } result]} {
     close $result ;# <--- essential to avoid resource leaks
 }
 ```
-
---
 
 .N[
 Note that closing a file – even if opened read-only – is usually necessary to
@@ -3945,8 +3677,6 @@ if {[catch { get_file_lines $pathname } file_lines]} {
 A counterpart subroutine [`put_file_lines`](#put_file_lines) is shown later.
 ]
 
---
-
 .W[
 If there is a risk the above might succeed on `open` but fail on `read`, there
 is a resource leak, as the file will not be closed.
@@ -3970,8 +3700,6 @@ the command [`catch`] that needs to be used for regaining control after an
   * everything went ok – then `catch` returs "false" and the `else` part gets
     control.
 
---
-
 * Depending on the former, the **second argument** of `catch` will 
 
   * either hold the message returned from `error`,
@@ -3987,8 +3715,6 @@ header: ##### Special File Handling Options
 
 The command [`fconfigure`] provides various sub-commands to control many
 aspects of files.
-
---
 
 The following list is by no means exhaustive:
 
@@ -4007,8 +3733,6 @@ Asynchronous designs with read operations in call-backs (registered via
 [`fileevent`]) are usually the superior **though not easily available with
 the Tcl-integration in Vivado**.
 ]
-
---
 
 .N[
 Non-blocking reading is often used for "pseudo files" representing serial lines
@@ -4033,14 +3757,10 @@ Again, the following is by no means exhaustive:
 * … flow control …
 * …
 
---
-
 .N[
 In the standard Tcl manual pages the details are **not documented** for
 `fconfigure` but in section [Serial Communications] of `open`.
 ]
-
---
 
 The example below shows how to open and configure a UART device file:._[]
 ```
@@ -4066,8 +3786,6 @@ header: ##### Reading Whole Files or Fixed Size Portions
 
 The command [`read`] either reads a number of given characters from a file, or
 a [whole file](#get_file_lines).
-
---
 
 The following fragment reads single characters with waiting (assuming a valid
 file-handle `fh`):
@@ -4104,8 +3822,6 @@ while {![eof $fh]} {
 }
 ```
 
---
-
 .W[
 Really useful means exactly that: **REALLY USEFUL** – doing nothing (and simply
 repeat) would eat-up precious CPU time!._[]
@@ -4126,8 +3842,6 @@ header: ##### Reading Line By Line
 
 The command [`gets`] reads single lines from a file.
 
---
-
 In detail its behaviour depends on the arguments used in the call:
 
 * With a file-handle **and** a variable name as argument it
@@ -4138,14 +3852,10 @@ In detail its behaviour depends on the arguments used in the call:
 Depending on the translation mode configured for the file end-of-line
 conventions will be handled transparently.
 
---
-
 .N[
 In the line read (and in the count returned by the second form) there is no
 end-of-line character contained.
 ]
-
---
 
 Principles of both usage forms (assuming `fh` refers to an open file):
 ```
@@ -4177,8 +3887,6 @@ while {![eof $fh]} {
 }
 ```
 ]
-
---
 
 Though both ways may look equivalent, they do actually are different for files
 in which the last line is terminated with end-of-line characters (as is usually
@@ -4213,12 +3921,8 @@ header: ##### Writing to Files
 The command [`puts`] has been used often in this presentation, but always
 with only **one** argument (and sometimes the option `-nonewline`).
 
---
-
 If used with **two** arguments the first must be a file handle, typically
 obtained from a call to open.
-
---
 
 The following is the counterpart to the example subroutine
 [`get_file_lines`](#get_file_lines):._[]
@@ -4247,8 +3951,6 @@ header: ##### More Operations with Open Files
 
 The commands [`eof`], [`seek`], [`tell`], support more operations with
 files (via file handles typically obtained from `open`).
-
---
 
 Printing the last ten bytes of a (presumably large) file in hex:
 ```
@@ -4288,20 +3990,14 @@ header: ##### Flushing and (finally) Closing Files
 The command [`close`] is required to release any resources connected to a file
 handle.
 
---
-
 .W[
 When a file is `close`-d, also the last buffered output is flushed. Hence this
 command may return an error for files that are written.
 ]
 
---
-
 Also note that [`flush`]-ing the buffer only happens from the perspective of the
 Tcl application. On modern operating systems (and even in the hardware of the
 storage system) there are usually additional levels of buffering.
-
---
 
 .N[
 Data may not have arrived on a reliable persistent storage media,._[] only
@@ -4341,8 +4037,6 @@ There are global variables for many more purposes, like checking for the
 version of Tcl (`tcl_version`) or Tk (`tk_version`).
 ]
 
---
-
 .N[
 By using global variables with to leading semicolons, e.g. `::env` instead of
 `env`, the above also works as part of a subroutine, without introducing the
@@ -4367,15 +4061,11 @@ proc die {message {exitstatus 127}} {
 }
 ```
 
---
-
 .W[
 A call to `exit` will usually terminate a Tcl script mmediately, hence
 **resources not cleaned up automatically** at the end of the process may
 leak …
 ]
-
---
 
 … but an application may chose to redefine the command `exit` and do something
 different.._[]
@@ -4397,16 +4087,12 @@ foreach v [lsort [array names ::env]] {
 }
 ```
 
---
-
 Or only those with a `XILINX_`-prefix:
 ```
 foreach v [lsort [array names ::env XILINX_*]] {
     puts "$v=$::env($v)
 }
 ```
-
---
 
 After modifying or adding to the global array `env`, the result is visible as
 (new) environment for a child processes, easily demonstrated as follows:
@@ -4425,8 +4111,6 @@ header: ### Running External Programs
 
 The command [`exec`] is the general interface to run separate processes.
 
---
-
 Via a mix of Tcl and (U*ix) Shell syntax it provides many variations as
 exemplified below (including a meaningful mix thereof):
 
@@ -4444,8 +4128,6 @@ necessitate to receive data sent *from* the external program *to* the
 interpreter in callbacks registered via [`fileevent`].
 ]
 
---
-
 Besides its main purpose to open classic files, also the command `open`
 provides easy ways to run a separate process while either
 
@@ -4460,16 +4142,12 @@ header: #### Running Foreground Processes
 The `exec` command may wait on the external program to end, i.e. run it
 synchronously.
 
---
-
 A typical fragment may look like this:
 ```
 set xprog "…  … … … … …" ;# program to execute (with arguments)
 set result [exec $xprog] ;# `exec` as child process, wait for end,
   # ^^^^^^----------------- and receive any output via return value
 ```
-
---
 
 .N[
 The command `exec` may also be used to start a pipeline of more than one
@@ -4484,8 +4162,6 @@ header: #### Running Background Processes
 The `exec` command may start the external program in the background, i.e. run
 it asynchronously (aka. as demon).
 
---
-
 A typical fragment may look like this:
 ```
 set xprog "…  … …" ;# program to execute (with arguments)
@@ -4498,16 +4174,12 @@ The above is used if it does not matter when and how the background
 process ended.
 ]
 
---
-
 The return value of an `exec` command like above, which is the [PID] of the
 process, may also be saved for later use:
 ```
 set pid [exec $xprog &] ;# `exec` child process, do NOT wait
   # ^^^-------------------- receive PID (or list of PIDs for pipe)
 ```
-
---
 
 If the command `exec` is used to start a pipeline of more than one program in
 the background, the return value is a list of all process ids.
@@ -4545,8 +4217,6 @@ exec kill -KILL $pid
 ```
 ]
 
---
-
 Linux and many other modern U*ix systems allow for finer grained interventions
 via the `/proc` file system.._[]
 
@@ -4567,14 +4237,10 @@ header: #### Receiving Output from a Process
 The [`open`] command may also be used to start a program as an external process
 to read its standard output via the file handle returned.
 
---
-
 .N[
 A pipeline to a child process is created by the `open` command when its
 "file name" argument starts with a vertical bar (`|`).
 ]
-
---
 
 Therefore the usage in principle looks as follows:
 ```
@@ -4587,8 +4253,6 @@ next pages,
 
 * either line by line – typically in case of textual data,
 * or in arbitrary chunks – useful for unstructured or binary data.
-
---
 
 .N.center[
 To avoid resource leaks, **do not forget this** at the end: `close $fh`
@@ -4607,8 +4271,6 @@ while {[gets $fh line] >= 0} {
 	…
 }
 ```
-
---
 
 … or in arbitrary chunks as it becomes available:
 ```
@@ -4630,8 +4292,6 @@ header: #### Supplying Input to a Process
 
 The [`open`] command may also be used to start a child process to which it
 supplies standard input in data chunks, produced piecemeal.
-
---
 
 First the main part that
 
@@ -4672,8 +4332,6 @@ proc produce_more {vdata} {
 The function is designed to be called repeatedly until it indicates the data is
 exhausted by returning the value `0`.
 
---
-
 .N[
 Note that this particular technique is especially attractive as it does **not**
 require all data is readily available when the child process starts.
@@ -4686,8 +4344,6 @@ header: #### Potential Problems with Pipeline Architectures
 Especially when the ability to **produce** the data to be sent **depends** on
 the progress of the child process **consuming** that data.
 
---
-
 .N.center[
 So beware of possible dead-locking scenarios!._[]
 ]
@@ -4699,13 +4355,9 @@ libraries used (like the C standard library file handling layer) or in the
 pipeline mechanim (as implemented by the operating system).
 ]
 
---
-
 Some possible precautions are:
 
 * Flush buffers if a reaction on the data sent is expected.
-
---
 
 * Maybe avoid blocking reads,
 
@@ -4713,8 +4365,6 @@ Some possible precautions are:
   * … and try to find to a trade-off between
       * busy waiting and
 	  * sub-optimal latency
-
---
 
 * **or even better strive for a fully event-driven architecture**.
 
@@ -4741,8 +4391,6 @@ header: #### Obtaining Information (on Most Everything)
 
 By various sub-commands the command [`info`] provides information many
 internals of the Tcl interpreter.
-
---
 
 The following is an overview only and by no means exhaustive:
 
@@ -4832,8 +4480,6 @@ There are two major ways to work with Vivado:
 
 * [Via Tcl Commands](#using_vivado_tcl_commands)
 
---
-
 The GUI is usually brought up first when Vivado is started
 
 * by clicking on its icon or
@@ -4877,8 +4523,6 @@ also a Programming Language Interface.
 Using Vivado via that interface is at the center of this training.
 ]
 
---
-
 Though in general everything that can be achieved via the Programming Language
 Interface can also be achieved via the GUI (and vice versa._[]), some deeper
 knowledge of the former will pay for
@@ -4903,8 +4547,6 @@ Technically most of the Vivado GUI is
 * just an interface to an underlying data base – called the *Design Model*
 * which can also be accessed – i.e. inspected and modified – via a
   *Command Language*.
-
---
 
 More precisely, *Tcl* once developed by John Ousterhout in the mid 90s, has
 been chosen as *Tool Command Language* for Vivado.
@@ -4954,8 +4596,6 @@ available which is useful for
   * as part of design elaboration,
   * writing bitstream-files, or just
 
---
-
 .N[
 Watching the command equivalent for GUI actions in the Tcl console is an
 extremely useful approach._[] if you want to find out which commands are
@@ -4980,8 +4620,6 @@ The Vivado Tcl Console consists of two main parts:
   * commands executed together with
   * output generated (on success) or
   * error messages (on failure)
-
---
 
 * A [Command Line](#vivado_tcl_console_commandline), to
 
@@ -5077,8 +4715,6 @@ Vivado Starting-Up, finally switching GUI mode (unless started in `-mode batch`
 `-mode tcl`).
 ]
 
---
-
 In *Tcl Mode* you have all the commands available that you may use at the
 command line of the *Tcl Console* in the Vivado GUI.
 
@@ -5104,8 +4740,6 @@ vivado -mode batch -source my_script.tcl
 Assumed here is that Vivado (i.e. the executable program name) is in your
 command search path so that the command `vivado` runs the design suite.
 ]
-
---
 
 It is equivalent to running Vivado in in *Tcl Mode* with
 ```
@@ -5145,17 +4779,11 @@ header: #### The Big Picture
 
 Under the surface of Vivado there are …
 
---
-
 .center[(… many things …)]
-
---
 
 represented by the internal
 
 * Design Model
-
---
 
 … but here the focus is on:
 
@@ -5172,18 +4800,12 @@ header: #### Zooming in to …
 
 What you need to now in Detail:
 
---
-
 * Some Basics on Tcl-list Handling
-
---
 
 * How to access a design object held in a Tcl-list
 
   * to read its attributes
   * or modify its attributes
-
---
 
 * How you reference a design object by
   * its name (which may be hierarchical)
@@ -5212,13 +4834,9 @@ As we are focussing on Tcl-lists in this section, please read the un-prefixed
 word "list" as "Tcl list".
 ]
 
---
-
 .N.center[
 Yes and no, actually one can argue that `li` holds just a string but …
 ]
-
---
 
 .pull-left[
 * … let's see:
@@ -5254,8 +4872,6 @@ The first thing to note is this:
 .N.center[
 You may apply list-related commands to plain strings._[] …
 ]
-
---
 
 … but there are also Tcl commands that return their result as a list:
 ```
@@ -5302,8 +4918,6 @@ set li1 [get_files]        ;# list of files HDL in current project
 set li2 [get_files *]      ;# as before (`*` is just the default)
 set li3 [get_files *.vhdl] ;# limited to files with suffix `.vhdl`
 ```
-
---
 Accessing objects in the Vivado Design Model will be covered later in much
 greater detail, but to give a first idea:
 
@@ -5340,11 +4954,7 @@ set city_list [split $cities \n] ;# LIST from string
 puts [llength $city_list]        ;# -> 3 (OK again)
 puts $city_list                  ;# (compare to remembered output)
 ```
---
-
 But what is the importance of this for lists of *Design Objects*?
-
---
 
 .N.center[
 Design Objects are like Icebergs …
@@ -5401,13 +5011,9 @@ puts [llength $li2]            ;# three now - ok,
 puts $li2                      ;# show them (or rather their names)
 ```
 
---
-
 .N.center[
 So far – so good – (and so useful) – **BUT** …
 ]
-
---
 
 … now you are dropping all the payload, keeping only the name:._[]
 ```
@@ -5419,8 +5025,6 @@ set li4 [split $li3 \n]; puts $li4 ;# still looks good, doesn't it?
 In practice this is a minor glitch not happening that often, but it is crucial
 for a solid understanding of the true nature of *Design Objects*.
 ]
-
---
 
 .center[
 Just wait until you know how to access a *Design Object*'s properties!
@@ -5492,8 +5096,6 @@ header: ##### Merging `print_names` and `print_one_name`
 
 This step deals mostly with Tcl programming – you may [skip it](#design_object_read_access).
 
---
-
 -------------------------------------------------------------------------
 
 As an "on the run" example consider the next fragment:
@@ -5539,13 +5141,9 @@ header: ##### Parametrizing The Property to Print
 
 This step deals mostly with Tcl programming – you may [skip it](#design_object_read_access).
 
---
-
 -------------------------------------------------------------------------
 
 One more extension to the "on the run" example seems natural now:._[]
-
---
 
 .F[:
 Of course, it's another parameter so that not only the name but any other
@@ -5597,8 +5195,6 @@ There are two basic categories
 Note that not all properties are modifiable – some are also read-only.
 ]
 
---
-
 Furthermore properties have a **type**, defining the valid set of values.
 .pull-left[
 Numeric types:
@@ -5635,16 +5231,12 @@ The first step is to select a single list element.
 (Of course, for a list with exactly one element this step does not apply.)
 ]
 
---
-
 Then the following commands are relevant:
 
 * [`get_property`](#vivado_get_property)
   * retrieve a **single** property **value**
 
 <!-- -->
---
-
 * [`list_property`](#vivado_list_property)
   * retrieve some._[] or all property **names**
 
@@ -5654,8 +5246,6 @@ Which properties are shown can be limited via a (name) pattern. By default
 command name hints into the wrong direction – if it would  end in
 `…_properties` it were more appropriate for the default use case.
 ]
-
---
 
 * [`report_property`](#vivado_report_property)  
   * retrieve some._[] or all property **names**
@@ -5678,11 +5268,7 @@ You can retrieve the full description from the *Vivado Tcl Shell* using
 `help get_property` or look it up in [XILINX UG835].
 ]
 
---
-
 The above is copied and pasted from the *Vivado Tcl Shell* output.
-
---
 
 It uses a typical meta-syntax which also works for non-"rich text" output:
 
@@ -5716,8 +5302,6 @@ The idea here is that
   * which of course makes no sense if there are several design objects that
     can have different values
 
---
-
 * but instead the *minimum* value or the *maximum* of all values.
 
 On the last page the basic syntax (output of `help get_property`) was edited to
@@ -5744,8 +5328,6 @@ list_property [-class <arg>] [-regexp] [-quiet] [-verbose]
               [<object>] [<pattern>]
 ```
 
---
-
 The optional `<pattern>` is a way to limit the output to only those properties
 that match that pattern.
 
@@ -5754,15 +5336,11 @@ You can retrieve the full description from the *Vivado Tcl Shell* using
 `help list_property` or look it up in [XILINX UG835].
 ]
 
---
-
 Clearly that command refers to classes, not individual objects, therefore:
 
 * **either** the class may be specified after `-class`
 
   * then the `<object>` argument must be omitted;
-
---
 
 * **or** an `<object>`._[] is specified and used to retrieve the class.
 
@@ -5790,14 +5368,10 @@ Again the optional `<pattern>` limits the output to only those properties
 matching that pattern.
 ]
 
---
-
 .I[
 You can retrieve the full description from the *Vivado Tcl Shell* using
 `help report_property` or look it up in [XILINX UG835].
 ]
-
---
 
 In case you are reading this text silently yourself and have a Vivado
 installation at hand, you are now encouraged to practically try the commands
@@ -5856,8 +5430,6 @@ A typical technique is to either name one single object unambiguously or
 using a pattern to match a related group of objects.
 ]
 
---
-
 * *Names* are *structured* with
   * an optional initial slash (`/`) and
   * eventually more separating slashes;._[]
@@ -5872,12 +5444,8 @@ this probably would conflict with the traditional use of backslashes in Tcl's
 core syntax).
 ]
 
---
-
 * *Patterns* for *Design Object* names
   * employ the asterisk (`*`) as *Wild-Card Symbol*.
-
---
 
 -------------------------------------------------------------------------------
 
@@ -5895,8 +5463,6 @@ Generally *Design Object Names* form a hierarchical tree-structure.
 
 Hence a comparison with (usually well-known) *Navigation in Hierarchical File
 Systems* seems natural.
-
---
 
 .pull-left[
 .center[***Design Object Names***]
@@ -5962,8 +5528,6 @@ Part of the *Block Designs* commands is a lexical `_bd_` infix.
 * …
 ]
 
---
-
 If you want to try navigation via design object names on a simple example,
 consider to create a trivial *Block Design* as test case.._[]
 
@@ -6023,19 +5587,13 @@ Some examples:
   * the second name component needs to be exactly `bbb`;
   * the third name component needs to be exactly `ccc`.
 
---
-
 <!-- -->
 * `a*/bbb/ccc` – as before but starting at `current_instance`.
-
---
 
 <!-- -->
 * `/aaa/*b*` – an object two levels below the design top level:
   * the first name component needs to be exactly `aaa`;
   * the second name component can be anything with `b` in it.
-
---
 
 <!-- -->
 * `x*y` – an object at the level below `current_instance`
@@ -6056,8 +5614,6 @@ A result list._[] may be empty if
 .N.center[
 Empty result lists are **not** an error but draw a warning.
 ]
-
---
 
 * A result list (say stored in `li`) can be tested for empty or not with
   * `if {[llength $li] != 0} …` – test for **not** empty
@@ -6085,15 +5641,11 @@ Even with wild-cards a "search" for a component can only take place at a given "
 – relative to the design top level or `current_instance`.._[]
 ]
 
---
-
 The `-hierarchical` option – often abbreviated as `-hier` – allows deal with this:
 
 * `get_cells -hier abc` – at any level lookup cells named `abc`.
 
 <!-- -->
---
-
 * `get_pins -hier x*y` – at any level lookup pins with a name
   * starting with `x` and
   * ending with `y`.
@@ -6143,14 +5695,10 @@ header: ##### Experimenting with and Patterns and the `-hierarchical` Option
 It is strongly suggested that experiment and try unambiguous names and name
 patterns in a simple design, to solidify your understanding.
 
---
-
 Just as an idea:
 
 * Do not (only) try a number of things "interactively" and nod through the results
   (as long as they are or appear to be plausible).
-
---
 
 <!-- -->
 * Instead – to a simple, fixed design – apply the TDD approach:
@@ -6158,8 +5706,6 @@ Just as an idea:
   * Programmatically compare these lists to your expectation.
   * (So the comparison is also part of that script.)
   * **Of course, the final goal is to see "All Tests Passed".**
-
---
 
 --------------------------------------------------------------------------------
 
@@ -6181,8 +5727,6 @@ Another important way to navigate the *Internal Design Model* is this:
 Follow the relationships certain *Design Objects* have with each other.
 ]
 
---
-
 As an example:
 
 * Some **cells** (may be retrieved by name with `get_cells`) are
@@ -6194,8 +5738,6 @@ As an example:
 
 This is expressed with the `-of_objects` option of the various commands
 producing result lists holding *Design Objects*.
-
---
 
 .I[
 For more information see:
@@ -6223,15 +5765,11 @@ the latter this will also be the case in future Vivado versions (though there
 is no expressed guarantee), as otherwise many existing scripts would break.
 ]
 
---
-
 .N[
 Though the nesting of `get_`-commands is meant to (somewhat) mirror human
 speech syntax, it is often better readable to express long chains with
 intermediate results stored in (temporary) variables.
 ]
-
---
 
 Once more the above example, accordingly re-written:
 ```
@@ -6294,19 +5832,13 @@ This is called *Result Lists Filtering* as the command option is `-filter`.
 This sometimes causes problems (for developers with too little knowledge of the
 Tcl basics), especially with what is called "Quoting":
 
---
-
 * White-space is significant in Tcl's core syntax as *Word Separator*
-
---
 
 <!-- -->
 * The whole filter expression
   * is separated by white space from the option keyword  `-filter`
   * and needs to be kept together as **one single word**,
   * i.e. **contained white-space must be quoted**.
-
---
 
 <!-- -->
 * Therefore it is usually._[] enclosed
@@ -6334,26 +5866,18 @@ acceptable.
 ]
 
 <!-- -->
---
-
 * Otherwise the syntax loosely similar to C-style expression, with
   * referencing *Design Object Properties* is *case insensitive*, and
   * operators for comparisons based on pattern matching (`=~`, `!~`)
-
---
 
 .N.center[
 Filter expressions can be based on **any** *Design Object* property.
 ]
 
---
-
 As a first example:
 
 * `get_cells -filter {PRIMITIVE_LEVEL == LEAF}` – leaf cells at top
 * `get_cells -hier -f {PRIMITIVE_LEVEL == LEAF}` – (at all levels) 
-
---
 
 .I[
 For more information see:
@@ -6407,21 +5931,15 @@ Therefore – in extreme crash course style:
   * if an argument is to be handled as "unit"
   * i.e. must not be broken into separate words.
 
---
-
 <!-- -->
 * Quoting white space can be done with:
   * curly braces – `{…` *`white-space doesn't separate words`* `…}`
   * double quotes – `"…` *`white-space doesn't separate words`* `…"`
 
---
-
 <!-- -->
 * The difference is between both is when it comes to substitutions:
   * `{…` *`nothing inside gets ever touched in any way`* `…}`
   * `"…` *`some standard substitutions will still happen`* `…"`
-
---
 
 To summarize:
 
@@ -6438,8 +5956,6 @@ header: ##### Cookbook-Style Quoting: Recipe 1
 **Use Curly Braces**  
 for handing over "plain untouched text".
 ]
-
---
 
 Possible Pitfalls:
 
@@ -6465,15 +5981,11 @@ for anything containing Tcl variables – say `my_var` – and for which
 the content is to be substituted (i.e. the actual use is `$my_var`).
 ]
 
---
-
 Possible Pitfalls:
 
 * Be aware of **all** the usual substitutions that may happen:
   * `$`*`varname`* gets substituted by the content of *`varname`*
   * `[`*`some tcl command`*`]` executes the embedded Tcl command
-
---
 
 <!-- -->
 .N.center[
@@ -6481,16 +5993,12 @@ Carefully protect `$` and `[ … ]` if **not** meant to cause one of the
 substitutions above, by preceding each of it with a **single** backslash.
 ]
 
---
-
 * OTOH, if the backslash does not **protect** one of the above, it **may**
   actually cause an unprintable character to be inserted.._[]
 
 .F[:
 Basically like in C/C++, i.e. newline for `\n`, tab for `\t`, etc.
 ]
-
---
 
 .N.center[
 Diligently write **two** backslashes (`\\`) if you really need **one**.
@@ -6506,12 +6014,8 @@ In difficult cases, don't try to be overly clever, e.g. with nested quoting.
 * E.g. it is very well possible to build an argument for the `-filter` option
   in advance, using a variable – say `my_condition`.
 
---
-
 <!-- -->
 * There is a Tcl command `format` which is much like `sprintf` in C.
-
---
 
 <!-- -->
 * You can use
@@ -6533,8 +6037,6 @@ set my_condition [format {
     # ^^^^^\__________/ 
 ```
 ]
-
---
 
 * Then the final use might look like this:
   * `get_cells -filter $my_condition`
@@ -6559,15 +6061,9 @@ In fact, [John Ousterhout], the original designer of Tcl/Tk once stated.
 Tcl's syntax might be more complex as zt actually is."*
 ]
 
---
-
 * It can be described with a tiny state machine.
 
---
-
 * It takes not much time to learn and master it.
-
---
 
 -------------------------------------------------------------------------------
 
@@ -6597,8 +6093,6 @@ following classes:
 `design`, `net`, `cell`, `pin`, `port`, `Pblock`, `interface`, and `fileset`
 ]
 
---
-
 E.g. you would add a user-specific boolean flag and a category accepting the
 three values `Foo`, `Bar`, and `Baz` as properties to `pin` objects this way:
 ```
@@ -6608,8 +6102,6 @@ create_property -type enum\
                 -description "My special category for `pins`"\
                 my_category pin
 ```
-
---
 
 .pull-left[
 Such properties are retrieved and modified as usual …
@@ -6638,8 +6130,6 @@ set my_classes [list pin cell net]
 foreach c $my_classes { create_property -type string my_usage $c }
 ```
 
---
-
 Assuming `my_usage` has been set properly, the following helper returns
 all `pins`-s, `cell`-s, and `net`-s with a specific `my_usage` in an array:
 ```
@@ -6652,8 +6142,6 @@ proc get_some_objects {usage arrayname} {
     }
 }
 ```
-
---
 
 The intended use looks as follows:
 ```
@@ -6674,8 +6162,6 @@ proc apply_to_all_of {arrayname code} {
 }
 ```
 
---
-
 Its use to highlight in orange color all the *Design Objects* resulting from
 the call to `get_my_objects` (from the page before) in orange would look like
 this:
@@ -6684,8 +6170,6 @@ apply_to_all_of my_result {
     highlight_objects -color orange
 }
 ```
-
---
 
 To remove highlighting use this:
 ```
