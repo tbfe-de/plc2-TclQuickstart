@@ -206,10 +206,11 @@ a, a > code {
 div.remark-slide-number {
 	padding-bottom: 4px;
 	padding-right: 4px;
+	margin-right: 0.8cm;
 	font-size: 90%
 }
 div.remark-notes {
-	font-size: 70%
+	font-size: 50%
 }
 
 /*
@@ -462,7 +463,7 @@ div.infolink {
         height: 1.9em;
 	bottom: 12px;
         left: 40px;
-	right: 130px;
+	right: 150px;
 }
 
 .pagefooter:before {
