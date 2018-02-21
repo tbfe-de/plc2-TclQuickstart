@@ -1,0 +1,106 @@
+This mini exercise deals with project creation up to the steps where all design
+sources and constraints have been added.
+
+
+                ------------------------------------------
+                PART 1: collect a sample WITHOUT variation
+                ------------------------------------------
+
+* Create a new project with Vivado up to adding the all source.
+
+* While doing so closely watch the Tcl Console for all the commands issued.
+
+* Copy and paste each vivado command in a file you wil later use for
+  automated (scripted) project creation.
+
+* BEFORE EACH COMMAND add Tcl comments describing
+
+  * WHAT each command does and
+  * WHICH of its parts are likely to change in different project
+    (like project name, directory, etc.)
+
+* When it comes to adding the source files you may chose to skip adding all
+ these files manually in the Vivado GUI.
+
+  * Instead copy the "add_files" commands from the script you currently use
+    to add the files.
+
+  * Also identify within this repeated command lists
+    * what is always the same and
+    * what changes from one use to the next
+    (It des not matter if what "stays the same" is part of a file nanme in
+    which some oher part changes from one use to the next.)
+
+===============================================================================
+Optional 1: while your file with Tcl commands is in this state – i.e. it will
+            EXACTLY create a specific project with NO variability, try it by
+            - EXIT your Vivado session completely
+            - in the Windows Explorer remove the project directory
+            - restart Vivado in GUI mode
+            - use the Tcl `source` command to execute what you have prepared
+            - make sure there are no errors running the command
+Optional 2: - again EXIT Vivado (as usual via the FILE-menu) and remove
+              the project just created completely using the Windows Explorer
+            - run Vivado AS COMMAND in a Windows command console ("DOS Box")
+              specifying the argument `-tcl` (so no GUI will start up)
+            - again use Tcl's `source` command to run the prepared script
+            - (again make sure there re no errors)
+Optional 3: - again EXIT Vivado (this time with the Tcl command `exit`)
+            - create the project now by replacing the argument `-tcl` you
+              used before with `-batch` followed by the name of the script
+              file.
+            - THEN start Vivado as usual, open the project you just created
+              and check whether it is in the proper state to be continue with
+              synthesis and implementation (just check, do not run anything)
+================================================================================
+
+                ----------------------------------------
+                PART 2: turn your sample into a Tcl proc
+                ----------------------------------------
+
+The goal here of course is, to ALLOW variation by moving all what may change to
+arguments of an otherwise generic Tcl subroutine.
+
+* For all the information that was still fixed in PART 1 but actually may vary
+  from project to project, chose a name identifying it, e.g.
+
+  - `project_name` for the project name
+  - `project_dir` for the prject directory
+
+* For the name parts in your file name list you may chose more than one name,
+e.g.
+
+  - `file_prefix` for the part that may vary from ONE project to the NEXT
+     (but otherwise stays the same WITHIN the same project), and
+  - `file_list` for the parts of your file names that identifying all the
+     different parts WITHIN a single project.
+
+* Using these names for the variable parts when setting up a project, the final
+  goal is to have a Tcl procedure that can be called as follows:
+
+  setup_project -project_name my-project\
+                -project_dir path-to-dir\
+                -file_prefix common-prefix-for-hdl-sources\
+                -file_list {
+                      first-hdl-file
+                      second-hdl-file
+                      third-hdl-file
+                      ...
+                      last-hdl-file
+                 }
+
+Some more notes on this:
+
+(1) You may have identified MORE variable parts or your general project setup,
+    so the above is not necessariy complete! E.g. for a list of constraints
+    files may be used in addition to the hdl sources. Alternatively you may
+    decide just to use ONE list of files and issue different `add_…` commands
+    depending on the file suffix.
+(2) For the general approach to hand over "named arguments" as shown above see
+    the example series `mtab.tcl`.
+(3) When it comes to dooing all the "add_files" command, of course you need
+    a `foreach` loop to run over the list of variable name parts supplied.
+(4) To assemble file names from separate paths, see `file join` – it is more
+    portable as `concat` as it uses the appropriate file name separator for
+    the Windows or Linux, depending on which system Vivado (or more precisely
+    the Tcl interpreter) is running.
