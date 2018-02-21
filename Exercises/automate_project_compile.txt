@@ -1,0 +1,37 @@
+This mini exercise deals with automating project copmpilation (i.e. finally creating
+output to a bitfile) by the use of Tcl scripting
+
+
+     ------------------------------------------------------------
+     PART 1: collect SEVERAL examples WITH some TYPICAL variation
+     ------------------------------------------------------------
+
+For the project for which you have automated the setup, now do a Synthesis and
+Implementation run up to creating a bitfile.
+
+* Watch the Tcl commands issued to do so and copy them over to a file you will
+  later use a Tcl script to automate the steps.
+
+* Modify some options in the Synthesis and/or Implementation settings (usually
+  by changing a strategy)
+
+* AGAIN the Tcl commands issued to do so and copy them over to a file you will
+  later use a Tcl script to automate the steps.
+
+* Determine which changes were done via Tcl commands when you changed options
+  (i.e. strategies) in the Synthesis and/or Implementation settings
+
+            ------------------------------------------------
+            PART 2: Extract common parts to a Tcl subroutine
+            ------------------------------------------------
+
+Much like you did for `setup_project` now determine what needs to go to
+arguments of a common Tcl subroutine `compile_to_bitfile` so that you can
+create bitfiles with different Synthesis and/or Implementation options by
+just calling the `compile_to_bitfile` with different "named arguments".
+
+                ----------------------------------------
+                PART 3: make the Tcl proc more robust
+                ----------------------------------------
+
+(Much the same as for subroutine `setup_project` – accordingly adjusted.)

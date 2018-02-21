@@ -78,16 +78,18 @@ e.g.
 * Using these names for the variable parts when setting up a project, the final
   goal is to have a Tcl procedure that can be called as follows:
 
-  setup_project -project_name my-project\
-                -project_dir path-to-dir\
-                -file_prefix common-prefix-for-hdl-sources\
-                -file_list {
-                      first-hdl-file
-                      second-hdl-file
-                      third-hdl-file
-                      ...
-                      last-hdl-file
-                 }
+````````````````````````````````````````````````````````````````
+setup_project -project_name my-project\
+              -project_dir path-to-dir\
+              -file_prefix common-prefix-for-hdl-sources\
+              -file_list {
+                    first-hdl-file
+                    second-hdl-file
+                    third-hdl-file
+                    ...
+                    last-hdl-file
+               }
+````````````````````````````````````````````````````````````````
 
 Some more notes on this:
 
@@ -104,3 +106,54 @@ Some more notes on this:
     portable as `concat` as it uses the appropriate file name separator for
     the Windows or Linux, depending on which system Vivado (or more precisely
     the Tcl interpreter) is running.
+
+                ----------------------------------------
+                PART 3: make the Tcl proc more robust
+                ----------------------------------------
+
+The advantage of the "named argument style" is that you can supply the caller
+may the arguments in any order and default values can be given to arguments not
+specified. Of course, sometimes a mandatory argument may be forgotten, so some
+code should be added to clearly idicate the usage.
+
+Here is a possible approach:
+
+````````````````````````````````````````````````````````````````
+proc setup_project {args} {
+    # showing help message on request
+    if {[string equal $args -help}]} {
+         puts "Usage: setup_project -argname argval ..."
+         puts " where -argname can be:"
+         puts "       -project_name <name of project>"
+         puts "       -project_dir <path name of project directory>
+         ...
+         return
+    }
+    # check for misspelled arguments
+    foreach arg [array names argval] {
+        switch -exact -- $arg {
+            -proj_name |
+            -project_dir |
+            ...
+            -file_list {}
+            default {
+                puts "setup_project: named argument `$arg` unknown (ignored)"
+            }
+        }
+    }
+    # setup defaults and specific arguments (as before)
+    ...
+    # check if all required arguments have values
+    foreach req_arg {
+        -project_name
+        -project_dir 
+        ...
+    } {
+       if {![info exists argval($req_arg)]} {
+           error "setup_project: named argument `$req_arg` missing"
+       }
+    }
+    # as before
+    ...
+}
+````````````````````````````````````````````````````````````````
