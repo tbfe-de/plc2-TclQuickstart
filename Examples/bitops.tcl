@@ -15,7 +15,7 @@ proc binary {args} {
 # puts [format %04X [binary 0]]
 # puts [format %04X [binary 1]]
 # puts [format %04X [binary 0001 1000]]
-# puts [format %04X [binary 0101 1101 0010]]
+puts [format %04X [binary 0101 1101 0010]]
  
 proc binfmt {val {len 0}} {
     set result [expr {$val & 1}]

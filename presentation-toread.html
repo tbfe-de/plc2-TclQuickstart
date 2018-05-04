@@ -337,7 +337,6 @@ More information on Tcl is available in user communities like these:
 
 * The Tclers Wiki – general Tcl (and Tk) topics
   http://wiki.tcl.tk
-  http://www.xilinx.com/products/design-tools/vivado/Tcl-store.html
 
 * The XILINX Tcl Store – with focus on using Tcl with XILINX products
   http://www.xilinx.com/products/design-tools/vivado/Tcl-store.html
@@ -1548,7 +1547,7 @@ The commands most often applied to lists._[] are [`llength`] and [`lindex`]:
 puts [llength $month_names]      ;# => 12
 puts [lindex $month_names 0]     ;# => Jan
 puts [lindex $month_names 1]     ;# => Feb
-puts [liindex $month_names 11]   ;# => Dec
+puts [lindex $month_names 11]    ;# => Dec
 puts [lindex $month_names 12]    ;# => (empty string)
 puts [lindex $month_names end]   ;# => Dec
 puts [lindex $month_names end-1] ;# => Nov
@@ -1650,7 +1649,7 @@ set capitals "$capital_of_AR $capital_of_DE $capital_of_GB"
 A more careful approach will use the command [`list`], which **will** work as
 (probably) expected:._[]
 ```
-set capitals "$capital_of_AR $capital_of_DE $capital_of_GB"
+set capitals [list $capital_of_AR $capital_of_DE $capital_of_GB]
 ```
 
 ---
@@ -2233,13 +2232,13 @@ the following example generates a detailed report with an average of all
 measured temperatures in the last line:
 ```
 set sum 0.0
-foreach measurement $tm {
-    lassign $tm loc temp ;# same as: set loc [lindex $tm 0]
-                          #          set temp [lindex $tm 1]
-    puts "temperature at $loc is $temp"
+foreach tm $measurements {
+    lassign $tm loc temp ;# same as: set loc [lindex $measurements 0]
+                          #          set temp [lindex $measurements 1]
+    puts "temperature $loc is $temp"
     set sum [expr {$sum + $temp}]
 }
-puts "average temperature is [expr {$sum / [llength $tm]}]"
+puts "average temperature: [expr {$sum / [llength $measurements]}]"
 ```
 
 ---
@@ -2255,17 +2254,17 @@ comparison to
 
 accessing individual elements **inside** the loop via their index:
 ```
-set count [length $measurements]
+set count [llength $measurements]
 set sum 0.0
 for {set i 0} {$i < $count} {incr i} {
-    lassign [lindex $measurement $i] loc temp
-	# or even more verbose:
-    # set loc [lindex $measurement $i 0]
-	# set temp [lindex $measurement $i 1]
-    puts "temperature at $loc is $temp"
+    lassign [lindex $measuremens $i] loc temp
+    # or even more verbose:
+        # set loc [lindex $measurement $i 0]
+        # set temp [lindex $measurement $i 1]
+    puts "temperature $loc is $temp"
     set sum [expr {$sum + $temp}]
 }
-puts "average temperature is [expr {$sum / $count}]"
+puts "average temperature: [expr {$sum / $count}]"
 ```
 
 ---
@@ -2285,11 +2284,11 @@ stored in two **separate** lists:._[]
 set sum 0.0
 set count 0
 foreach loc $locations temp $temperatures {
-    puts "temperature at $loc is $temp"
+    puts "temperature $loc is $temp"
     set sum [expr {$sum + $temp}]
     incr count
 }
-puts "average temperature is [expr {$sum / $count}]"
+puts "average temperature: [expr {$sum / $count}]"
 ```
 
 .F[:
@@ -2319,8 +2318,8 @@ The following example assumes
 (same for both fragments):._[]
 
 ```
-foreach location [array names measurements] {
-    puts "temperature at $location is $measurements($location)"
+foreach loc [array names measurements] {
+    puts "temperature $loc is $measurements($loc)"
 }
 ```
 
@@ -2331,8 +2330,8 @@ to add it.
 
 Or with yet an alternate loop form:
 ```
-foreach {temperature location} [array get measurements] {
-    puts "temperature at $location is $temperature"
+foreach {loc temp} [array get measurements] {
+    puts "temperature $loc is $temp"
 }
 ```
 
@@ -5690,7 +5689,7 @@ for **modifying** information held in *Design Objects*.
 ---
 template: plain
 name: design_object_relations
-header: ##### Experimenting with and Patterns and the `-hierarchical` Option
+header: ##### Experimenting with and Patterns
 
 It is strongly suggested that experiment and try unambiguous names and name
 patterns in a simple design, to solidify your understanding.
